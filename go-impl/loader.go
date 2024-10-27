@@ -5,8 +5,8 @@ import (
 	"crypto/cipher"
 	"crypto/sha256"
 	"fmt"
-	"os"
 	"golang.org/x/sys/unix"
+	"os"
 )
 
 // generateKey generates a 32-byte AES-256 key from a password.

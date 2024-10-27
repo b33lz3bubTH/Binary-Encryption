@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-const int SIZE = 30; // Changeable matrix size
+// const int SIZE = 30; // Changeable matrix size
 
 // Function to print a matrix with improved formatting
 void printMatrix(const std::vector<std::vector<int>> &matrix) {
@@ -19,7 +19,9 @@ void printMatrix(const std::vector<std::vector<int>> &matrix) {
   std::cout << std::endl;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+
+  const int SIZE = argc > 1 ? atoi(argv[1]) : 30;
   // Seed random number generator
   srand(static_cast<unsigned>(time(0)));
 
@@ -31,8 +33,8 @@ int main() {
   // Fill matrices A and B with random numbers
   for (int i = 0; i < SIZE; ++i) {
     for (int j = 0; j < SIZE; ++j) {
-      A[i][j] = rand() % 10; // Random numbers from 0 to 9
-      B[i][j] = rand() % 10;
+      A[i][j] = rand() % 10 + rand(); // Random numbers from 0 to 9
+      B[i][j] = rand() % 10 + rand();
     }
   }
 
