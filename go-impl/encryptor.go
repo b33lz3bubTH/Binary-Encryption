@@ -10,13 +10,11 @@ import (
 	"os"
 )
 
-// generateKey generates a 32-byte AES-256 key from a password.
 func generateSecureKey(password string) []byte {
 	hash := sha256.Sum256([]byte(password))
 	return hash[:]
 }
 
-// encryptData encrypts data using AES-256-CBC.
 func encryptData(data, key []byte) ([]byte, []byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -66,7 +64,6 @@ func main() {
 	}
 	defer output.Close()
 
-	// Write IV and ciphertext to output
 	output.Write(iv)
 	output.Write(encryptedData)
 
