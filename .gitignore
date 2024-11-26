@@ -1,5 +1,4 @@
-config/index.js
-
+node-client/src/config/index.js
 # Node.js
 node_modules/
 *.log
