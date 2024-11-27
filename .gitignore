@@ -1,4 +1,4 @@
-node-client/src/config/index.js
+/node-client-[depricated]/src/config/index.js
 # Node.js
 node_modules/
 *.log
